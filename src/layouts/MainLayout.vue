@@ -10,7 +10,7 @@
           {{ this.mainTitile }}
         </q-toolbar-title>
         <q-btn-toggle
-        v-model="activeTools"
+        v-model="mainStore.selectedTools"
         push
         rounded
         glossy
@@ -69,16 +69,19 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
+import { useMainStore } from '../stores/mainStore'
 
 export default defineComponent({
   name: 'MainLayout',
   setup () {
     const mainTitile = 'Start with BabilonJS'
+    const mainStore = useMainStore()
+    mainStore.selectedTools = 'cursore'
 
     return {
       mainTitile,
-      activeTools: ref('cursore')
+      mainStore
     }
   }
 })

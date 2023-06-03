@@ -3,18 +3,32 @@
 </template>
 <!-- -------------------------------------------------------------------------------- -->
 <script>
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, watch } from 'vue'
 import { createScene, scene, hangAction, createMesh } from '../scenes/mainScene'
+import { useMainStore } from '../stores/mainStore'
 
 const meshList = [
   { type: 'sphere', params: { diameter: 2, segments: 32 }, position: { x: 0, y: 1 }, diffColor: { r: 1.0, g: 0.4, b: 0 }, onScene: {}, isSelected: false },
   { type: 'ground', params: { width: 8, height: 8 }, position: { x: 0, y: 0 }, diffColor: { r: 0, g: 0.6, b: 0.6 }, onScene: {}, isSelected: false }
 ]
 
+// const selectedMesh = ref({})
+
 export default defineComponent({
   name: 'MainScene',
   setup () {
     const bjsCanvas = ref(null)
+
+    const mainStore = useMainStore()
+
+    const switchTools = function () {
+      console.log(`Selected tools is ${mainStore.selectedTools} and selected mesh is ${mainStore.selectedMesh.id}`)
+    }
+
+    watch(
+      () => mainStore.selectedTools,
+      (newValue, oldValue) => { switchTools() }
+    )
 
     onMounted(() => {
       if (bjsCanvas.value) {
@@ -37,9 +51,14 @@ export default defineComponent({
     })
 
     return {
-      bjsCanvas
+      bjsCanvas,
+      mainStore
     }
+  },
+  methods: {
+
   }
+
 })
 </script>
 <!-- -------------------------------------------------------------------------------- -->

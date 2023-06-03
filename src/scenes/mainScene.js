@@ -1,7 +1,11 @@
-import { Engine, Scene, FreeCamera, Vector3, MeshBuilder, StandardMaterial, Color3, HemisphericLight, ActionManager, ExecuteCodeAction, HighlightLayer } from '@babylonjs/core'
+import { Engine, Scene, FreeCamera, Vector3, MeshBuilder, StandardMaterial, Color3, HemisphericLight, ActionManager, ExecuteCodeAction, HighlightLayer, GizmoManager } from '@babylonjs/core'
+import { useMainStore } from '../stores/mainStore'
 
 let scene
 let hightlightLayer
+let gizmoManager
+
+const mainStore = useMainStore()
 
 const createScene = (canvas) => {
   const engine = new Engine(canvas)
@@ -15,6 +19,8 @@ const createScene = (canvas) => {
   light.intensity = 0.7
 
   hightlightLayer = new HighlightLayer('mainHightlightLayer', scene)
+
+  gizmoManager = new GizmoManager(scene)
 
   engine.runRenderLoop(() => {
     scene.render()
@@ -51,10 +57,12 @@ const hangAction = function (scene, meshObj) {
     new ExecuteCodeAction(ActionManager.OnPickUpTrigger, function () {
       if (meshObj.isSelected) {
         meshObj.isSelected = false
+        mainStore.selectedMesh = {}
         hightlightLayer.removeMesh(mesh)
         hightlightLayer.addMesh(mesh, Color3.White())
       } else {
         meshObj.isSelected = true
+        mainStore.selectedMesh = mesh
         hightlightLayer.removeMesh(mesh)
         hightlightLayer.addMesh(mesh, new Color3(1.0, 0.6, 0.2))
       }
@@ -86,4 +94,4 @@ const createMesh = function (scene, meshObj) {
   return objOnScene
 }
 
-export { scene, createScene, hangAction, createMesh }
+export { scene, createScene, hangAction, createMesh, gizmoManager }
