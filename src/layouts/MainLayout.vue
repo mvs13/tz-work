@@ -1,20 +1,20 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-
-    <q-footer elevated class="bg-grey-8 text-white">
+    <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+            <img src="https://github.com/BabylonJS/Brand-Toolkit/blob/master/babylon_logo/fullColor/babylon_logo_color.png?raw=true">
           </q-avatar>
-          <div>Title</div>
+          {{ this.mainTitile }}
         </q-toolbar-title>
       </q-toolbar>
-    </q-footer>
+    </q-header>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
 
   </q-layout>
 </template>
@@ -24,9 +24,11 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'MainLayout',
-
   setup () {
+    const mainTitile = 'Start with BabilonJS'
+
     return {
+      mainTitile
     }
   }
 })
