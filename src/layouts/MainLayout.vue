@@ -9,6 +9,55 @@
           </q-avatar>
           {{ this.mainTitile }}
         </q-toolbar-title>
+        <q-btn-toggle
+        v-model="activeTools"
+        push
+        rounded
+        glossy
+        toggle-color="secondary"
+        :options="[
+          {value: 'cursore', slot: 'one'},
+          {value: 'move', slot: 'two'},
+          {value: 'rotate', slot: 'three'},
+          {value: 'scale', slot: 'four'}
+        ]"
+      >
+        <template v-slot:one>
+          <div class="row items-center no-wrap">
+            <div class="text-center">
+              Курсор
+            </div>
+            <q-icon right name="fa-solid fa-arrow-pointer" />
+          </div>
+        </template>
+
+        <template v-slot:two>
+          <div class="row items-center no-wrap">
+            <div class="text-center">
+              Смещение
+            </div>
+            <q-icon right name="fa-solid fa-arrows-up-down-left-right" />
+          </div>
+        </template>
+
+        <template v-slot:three>
+          <div class="row items-center no-wrap">
+            <div class="text-center">
+              Вращение
+            </div>
+            <q-icon right name="fa-solid fa-arrows-rotate" />
+          </div>
+        </template>
+
+        <template v-slot:four>
+          <div class="row items-center no-wrap">
+            <div class="text-center">
+              Масштабирование
+            </div>
+            <q-icon right name="fa-solid fa-maximize" />
+          </div>
+        </template>
+      </q-btn-toggle>
       </q-toolbar>
     </q-header>
 
@@ -20,7 +69,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -28,7 +77,8 @@ export default defineComponent({
     const mainTitile = 'Start with BabilonJS'
 
     return {
-      mainTitile
+      mainTitile,
+      activeTools: ref('cursore')
     }
   }
 })

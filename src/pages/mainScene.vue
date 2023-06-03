@@ -4,7 +4,12 @@
 <!-- -------------------------------------------------------------------------------- -->
 <script>
 import { defineComponent, ref, onMounted } from 'vue'
-import { createScene } from '../scenes/mainScene'
+import { createScene, scene, hangAction, createMesh } from '../scenes/mainScene'
+
+const meshList = [
+  { type: 'sphere', params: { diameter: 2, segments: 32 }, position: { x: 0, y: 1 }, diffColor: { r: 1.0, g: 0.4, b: 0 }, onScene: {}, isSelected: false },
+  { type: 'ground', params: { width: 8, height: 8 }, position: { x: 0, y: 0 }, diffColor: { r: 0, g: 0.6, b: 0.6 }, onScene: {}, isSelected: false }
+]
 
 export default defineComponent({
   name: 'MainScene',
@@ -23,6 +28,11 @@ export default defineComponent({
           canvas.height = window.innerHeight - 50
         }
         resizeCanvas()
+
+        meshList.forEach(item => {
+          item.onScene = createMesh(scene, item)
+          hangAction(scene, item)
+        })
       }
     })
 
