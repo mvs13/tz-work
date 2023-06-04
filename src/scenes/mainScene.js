@@ -4,7 +4,6 @@ import { useMainStore } from '../stores/mainStore'
 let scene
 let hightlightLayer
 let gizmo
-// let utilLayer
 
 const mainStore = useMainStore()
 
@@ -22,7 +21,6 @@ const createScene = (canvas) => {
   hightlightLayer = new HighlightLayer('mainHightlightLayer', scene)
 
   gizmo = new GizmoManager(scene)
-  // utilLayer = new UtilityLayerRenderer(scene)
 
   engine.runRenderLoop(() => {
     scene.render()
