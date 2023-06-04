@@ -3,7 +3,8 @@ import { useMainStore } from '../stores/mainStore'
 
 let scene
 let hightlightLayer
-let gizmoManager
+let gizmo
+// let utilLayer
 
 const mainStore = useMainStore()
 
@@ -20,7 +21,8 @@ const createScene = (canvas) => {
 
   hightlightLayer = new HighlightLayer('mainHightlightLayer', scene)
 
-  gizmoManager = new GizmoManager(scene)
+  gizmo = new GizmoManager(scene)
+  // utilLayer = new UtilityLayerRenderer(scene)
 
   engine.runRenderLoop(() => {
     scene.render()
@@ -94,4 +96,30 @@ const createMesh = function (scene, meshObj) {
   return objOnScene
 }
 
-export { scene, createScene, hangAction, createMesh, gizmoManager }
+const enableGizmo4Mesh = function () {
+  switch (mainStore.selectedTools) {
+    case 'move':
+      gizmo.positionGizmoEnabled = true
+      break
+    case 'rotate':
+      gizmo.rotationGizmoEnabled = true
+      break
+    case 'scale':
+      gizmo.scaleGizmoEnabled = true
+      break
+    default:
+      return
+  }
+  gizmo.attachToMesh(mainStore.selectedMesh)
+}
+
+const disableGizmo4Mesh = function () {
+  gizmo.positionGizmoEnabled = false
+  gizmo.rotationGizmoEnabled = false
+  gizmo.scaleGizmoEnabled = false
+  if (gizmo.gizmos.rotationGizmo !== null) {
+    gizmo.gizmos.rotationGizmo.updateGizmoRotationToMatchAttachedMesh = false
+  }
+}
+
+export { scene, createScene, hangAction, createMesh, enableGizmo4Mesh, disableGizmo4Mesh }

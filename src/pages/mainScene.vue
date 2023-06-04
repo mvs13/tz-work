@@ -4,7 +4,8 @@
 <!-- -------------------------------------------------------------------------------- -->
 <script>
 import { defineComponent, ref, onMounted, watch } from 'vue'
-import { createScene, scene, hangAction, createMesh } from '../scenes/mainScene'
+import { useQuasar } from 'quasar'
+import { createScene, scene, hangAction, createMesh, enableGizmo4Mesh, disableGizmo4Mesh } from '../scenes/mainScene'
 import { useMainStore } from '../stores/mainStore'
 
 const meshList = [
@@ -17,12 +18,24 @@ const meshList = [
 export default defineComponent({
   name: 'MainScene',
   setup () {
+    const $q = useQuasar()
     const bjsCanvas = ref(null)
 
     const mainStore = useMainStore()
 
     const switchTools = function () {
-      console.log(`Selected tools is ${mainStore.selectedTools} and selected mesh is ${mainStore.selectedMesh.id}`)
+      disableGizmo4Mesh()
+      if (mainStore.selectedTools !== 'cursore') {
+        if (mainStore.selectedMesh.id !== undefined) {
+          enableGizmo4Mesh()
+        // console.log(`Selected tools is ${mainStore.selectedTools} and selected mesh is ${mainStore.selectedMesh.id}`)
+        } else {
+          mainStore.selectedTools = 'cursore'
+          $q.notify({
+            message: 'You must select mesh first.'
+          })
+        }
+      }
     }
 
     watch(
